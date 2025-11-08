@@ -8,10 +8,14 @@
 
 .Fundo_Perfil {
     width: 100%;
-    height: 650px;
-    background-image:url(../../assets/img/3786391_78792\ 1.svg);
+    min-height: 100vh;
+    background-image: url("../../assets/img/3786391_78792 1.svg");
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .Painel{
     display: flex;
@@ -19,7 +23,6 @@
     width: 85%;
     gap: 20%;
     max-width: 800px;
-    padding-top: 175px;
     margin: auto;
 }
 .Tabela_Perfil{
@@ -82,4 +85,14 @@
     transition: 0.001s;
     height: 40px;
     width: 40%;
+}
+.Avaliacao-Pesona{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 120%;
+    height: 300px;
+    border-radius: 20px;
+    background: var(--azul-claro);
 }

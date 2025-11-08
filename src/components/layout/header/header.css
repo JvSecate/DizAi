@@ -1,5 +1,6 @@
 :root {
     --vermelho-escuro: #BE1E2D ;
+    --Verde-Agua-Claro: #04D9B2;
     --vermelho-claro: #F2293D;
     --preto: #1C1C1C; 
     --branco: #F2F2F2 ;
@@ -36,4 +37,26 @@
 }
 .Button_Op:hover{
     text-decoration:underline;
+}
+.Button_Search {
+  margin-left: 15px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--verde-azul-escuro);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.Button_Search:hover {
+  color: var(--Verde-Agua-Claro);
+  transform: scale(1.1);
+}
+
+.icon-search {
+  pointer-events: none;
 }

@@ -8,10 +8,14 @@
 
 .Fundo {
     width: 100%;
-    height: 650px;
-    background-image:url(../../assets/img/3786391_78792\ 1.svg);
+    min-height: 100vh;
+    background-image: url("../../assets/img/3786391_78792 1.svg");
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .Titulo_Css{
     color: #F2293D;
@@ -23,7 +27,6 @@
     width: 85%;
     gap: 50%;
     max-width: 450px;
-    padding-top: 200px;
     margin: auto;
 }
 .Tabela{

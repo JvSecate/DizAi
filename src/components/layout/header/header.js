@@ -1,9 +1,12 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
 import './header.css'
 import Logo from '../../../assets/img/LogoSistema Fundo_Transparenrte.png'
+import { FaSearch } from "react-icons/fa";
 
-const header = () => {
+const Header = () => {
+    const location = useLocation();
+    const isResultadosPage = location.pathname === "/resultados";
     return (
         <Fragment>
             <header className='area-header'>
@@ -22,6 +25,11 @@ const header = () => {
                         <Link className='Button_Op' to="/">
                             Sair
                         </Link>
+                        {!isResultadosPage && (
+                            <Link className="Button_Search" to="/resultados">
+                            <FaSearch className="icon-search" />
+                            </Link>
+                        )}
                     </div>
                 </div>
             </header>
@@ -29,4 +37,4 @@ const header = () => {
     )
 }
 
-export default header
+export default Header

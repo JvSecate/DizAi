@@ -48,6 +48,18 @@ export default function Perfil() {
     {
       titulo: "Produto entregue com atraso",
       status: "Resolvida",
+    },
+    {
+      titulo: "Produto entregue com atraso",
+      status: "Não resolvida",
+    },
+    {
+      titulo: "Produto entregue com atraso",
+      status: "Resolvida",
+    },
+    {
+      titulo: "Produto entregue com atraso",
+      status: "Em andamento",
     }
   ]
 

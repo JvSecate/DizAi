@@ -7,6 +7,7 @@ import PrivateRoute from './privateRotas'
 import Sistema from '../paginas/Sistema/sistema'
 import Perfil from '../paginas/Perfil/perfil'
 import Cadastro_Empresa from '../paginas/cadastro-Empresa/cadastro-Empresa'
+import Resultados from '../paginas/Resultados/resultados'
 
 const Rotas = () => {
   return (
@@ -18,6 +19,7 @@ const Rotas = () => {
           <Route path='/home' element={<Home/>}/>
           <Route path='/sistema' element={<Sistema/>}/>
           <Route path='/perfil' element={<Perfil/>}/>
+          <Route path='/resultados' element={<Resultados/>}/>
         </Route>
     </Routes>
   )
