@@ -8,6 +8,7 @@ import Sistema from '../paginas/Sistema/sistema'
 import Perfil from '../paginas/Perfil/perfil'
 import Cadastro_Empresa from '../paginas/cadastro-Empresa/cadastro-Empresa'
 import Resultados from '../paginas/Resultados/resultados'
+import Empresa from '../paginas/Empresa/empresa'
 
 const Rotas = () => {
   return (
@@ -20,6 +21,7 @@ const Rotas = () => {
           <Route path='/sistema' element={<Sistema/>}/>
           <Route path='/perfil' element={<Perfil/>}/>
           <Route path='/resultados' element={<Resultados/>}/>
+          <Route path='/empresa/:id' element={<Empresa/>}/>
         </Route>
     </Routes>
   )

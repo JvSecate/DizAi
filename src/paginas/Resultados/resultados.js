@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./resultados.css";
 import imagemFundo from "../../assets/img/3786391_78792 1.svg";
 
@@ -61,7 +62,11 @@ const Resultados = () => {
           <div className="lista-usuarios">
             {resultadosFiltrados.length > 0 ? (
               resultadosFiltrados.map((usuario) => (
-                <div className="usuario-card" key={usuario.id}>
+                <Link
+                  key={usuario.id}
+                  to={`/empresa/${usuario.id}`} // 👈 Rota dinâmica
+                  className="usuario-card"
+                >
                   <img
                     src={usuario.imagem}
                     alt={usuario.nome}
@@ -72,7 +77,7 @@ const Resultados = () => {
                     <h2>{usuario.categoria}</h2>
                     <p>{usuario.descricao}</p>
                   </div>
-                </div>
+                </Link>
               ))
             ) : (
               <p className="sem-resultados">Nenhum resultado encontrado.</p>
