@@ -1,16 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import './perfil.css'
+import './perfil.css';
 import { BsPencilSquare } from "react-icons/bs";
-
 
 export default function Perfil() {
   const [editMode, setEditMode] = useState({
@@ -20,11 +18,26 @@ export default function Perfil() {
   });
 
   const [formData, setFormData] = useState({
-    nome: "Seu Nome",
-    email: "seu@email.com",
-    senha: "123456",
+    nome: "",
+    email: "",
+    senha: "",
   });
 
+  const [mensagem, setMensagem] = useState('');
+
+  // 🔹 Carrega os dados do usuário logado
+  useEffect(() => {
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    if (usuarioLogado) {
+      setFormData({
+        nome: usuarioLogado.nome,
+        email: usuarioLogado.email,
+        senha: usuarioLogado.senha,
+      });
+    }
+  }, []);
+
+  // 🔹 Alterna modo de edição
   const handleToggleEdit = (campo) => {
     setEditMode((prev) => ({
       ...prev,
@@ -32,6 +45,7 @@ export default function Perfil() {
     }));
   };
 
+  // 🔹 Atualiza os valores digitados
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -40,28 +54,35 @@ export default function Perfil() {
     }));
   };
 
+  // 🔹 Salva as alterações no localStorage
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Dados salvos:", formData);
+
+    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+    // Atualiza o usuário logado e a lista geral
+    const usuariosAtualizados = usuarios.map((u) =>
+      u.email === usuarioLogado.email ? formData : u
+    );
+
+    localStorage.setItem('usuarios', JSON.stringify(usuariosAtualizados));
+    localStorage.setItem('usuarioLogado', JSON.stringify(formData));
+
+    setMensagem('Dados atualizados com sucesso!');
+    setEditMode({ nome: false, email: false, senha: false });
+
+    // Esconde mensagem após 3 segundos
+    setTimeout(() => setMensagem(''), 3000);
   };
+
+  // 🔹 Lista fictícia (exemplo)
   const resposta = [
-    {
-      titulo: "Produto entregue com atraso",
-      status: "Resolvida",
-    },
-    {
-      titulo: "Produto entregue com atraso",
-      status: "Não resolvida",
-    },
-    {
-      titulo: "Produto entregue com atraso",
-      status: "Resolvida",
-    },
-    {
-      titulo: "Produto entregue com atraso",
-      status: "Em andamento",
-    }
-  ]
+    { titulo: "Produto entregue com atraso", status: "Resolvida" },
+    { titulo: "Atendimento ruim", status: "Não resolvida" },
+    { titulo: "Problema no cadastro", status: "Em andamento" },
+    { titulo: "Pedido duplicado", status: "Resolvida" },
+  ];
 
   return (
     <div className="Fundo_Perfil">
@@ -84,7 +105,11 @@ export default function Perfil() {
               className="Edit_Button"
               onClick={() => handleToggleEdit("nome")}
             >
-            <BsPencilSquare name='Edit' size={20} color={editMode.nome ? '#A0F2CC' : 'black'} />
+              <BsPencilSquare
+                name='Edit'
+                size={20}
+                color={editMode.nome ? '#04D9B2' : 'black'}
+              />
             </button>
           </div>
 
@@ -105,7 +130,11 @@ export default function Perfil() {
               className="Edit_Button"
               onClick={() => handleToggleEdit("email")}
             >
-              <BsPencilSquare name='Edit' size={20} color={editMode.email ? '#A0F2CC' : 'black'} />
+              <BsPencilSquare
+                name='Edit'
+                size={20}
+                color={editMode.email ? '#04D9B2' : 'black'}
+              />
             </button>
           </div>
 
@@ -126,9 +155,19 @@ export default function Perfil() {
               className="Edit_Button"
               onClick={() => handleToggleEdit("senha")}
             >
-              <BsPencilSquare name='Edit' size={20} color={editMode.senha ? '#A0F2CC' : 'black'} />
+              <BsPencilSquare
+                name='Edit'
+                size={20}
+                color={editMode.senha ? '#04D9B2' : 'black'}
+              />
             </button>
           </div>
+
+          {mensagem && (
+            <p style={{ color: '#00b327ff', fontWeight: 'bold', marginTop: '10px' }}>
+              {mensagem}
+            </p>
+          )}
 
           <div className="Alterar-botao-area">
             <button className="Alterar-botao" type="submit">
@@ -136,30 +175,38 @@ export default function Perfil() {
             </button>
           </div>
         </form>
-      <Table className="Avaliacao-Pesona">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="Titulo-Tabela">Titulo/Razão</TableHead>
-            <TableHead className="Titulo-Tabela">Avaliação</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {resposta.map((item, index) => (
-            <TableRow key={index}>
-              <TableCell className="font-medium">{item.titulo}</TableCell>
-              <TableCell className="font-medium">
-                <span
-                  style={{ color: item.status == "Não resolvida" ? '#c50000ff' :
-                    item.status == "Resolvida" ? '#00b327ff' :
-                    item.status == "Em andamento" ? "#666666" : '#000' }}
-                >
-                  {item.status}
-                </span>
-              </TableCell>
+
+        <Table className="Avaliacao-Pesona">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="Titulo-Tabela">Título/Razão</TableHead>
+              <TableHead className="Titulo-Tabela">Status</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {resposta.map((item, index) => (
+              <TableRow key={index}>
+                <TableCell className="font-medium">{item.titulo}</TableCell>
+                <TableCell className="font-medium">
+                  <span
+                    style={{
+                      color:
+                        item.status === "Não resolvida"
+                          ? "#c50000ff"
+                          : item.status === "Resolvida"
+                          ? "#00b327ff"
+                          : item.status === "Em andamento"
+                          ? "#666666"
+                          : "#000",
+                    }}
+                  >
+                    {item.status}
+                  </span>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -19,11 +19,30 @@ export default function Perfil_Empresa() {
   });
 
   const [formData, setFormData] = useState({
-    nome: "Seu Nome",
-    email: "seu@email.com",
-    senha: "123456",
+    nome: "",
+    email: "",
+    senha: "",
     img: "",
   });
+
+  const [mensagem, setMensagem] = useState("");
+
+  // Função para carregar dados do localStorage
+  const carregarEmpresa = () => {
+    const empresaLogado = JSON.parse(localStorage.getItem("empresaLogado"));
+    if (empresaLogado) {
+      setFormData({
+        nome: empresaLogado.nome || "",
+        email: empresaLogado.email || "",
+        senha: empresaLogado.senha || "",
+        img: empresaLogado.img || "",
+      });
+    }
+  };
+
+  useEffect(() => {
+    carregarEmpresa();
+  }, []);
 
   const handleToggleEdit = (campo) => {
     setEditMode((prev) => ({
@@ -42,7 +61,25 @@ export default function Perfil_Empresa() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Dados salvos:", formData);
+
+    const empresaLogado = JSON.parse(localStorage.getItem("empresaLogado"));
+    const empresas = JSON.parse(localStorage.getItem("empresa") || "[]");
+
+    // Atualiza o usuário logado e a lista geral
+    const empresasAtualizadas = empresas.map((u) =>
+      u.email === empresaLogado.email ? formData : u
+    );
+
+    localStorage.setItem("empresa", JSON.stringify(empresasAtualizadas));
+    localStorage.setItem("empresaLogado", JSON.stringify(formData));
+
+    setMensagem("Dados atualizados com sucesso!");
+    setEditMode({ nome: false, email: false, senha: false });
+
+    // Atualiza os dados exibidos
+    carregarEmpresa();
+
+    setTimeout(() => setMensagem(""), 3000);
   };
 
   const handleImageChange = (e) => {
@@ -52,7 +89,7 @@ export default function Perfil_Empresa() {
       reader.onloadend = () => {
         setFormData((prev) => ({
           ...prev,
-          img: reader.result, // Salva a imagem em base64
+          img: reader.result,
         }));
       };
       reader.readAsDataURL(file);
@@ -61,32 +98,33 @@ export default function Perfil_Empresa() {
 
   const resposta = [
     { titulo: "Produto entregue com atraso", status: "Resolvida" },
-    { titulo: "Produto entregue com atraso", status: "Não resolvida" },
-    { titulo: "Produto entregue com atraso", status: "Resolvida" },
-    { titulo: "Produto entregue com atraso", status: "Em andamento" },
+    { titulo: "Produto com defeito", status: "Não resolvida" },
+    { titulo: "Atendimento ruim", status: "Em andamento" },
   ];
 
   return (
     <div className="Fundo_Perfil_Empresa">
       <div className="Painel_Empresa">
+        {mensagem && <div className="mensagem-sucesso">{mensagem}</div>}
         <form className="Tabela_Perfil_Empresa" onSubmit={handleSubmit}>
           <div className="Perfil-Imagem-Container">
             <img
               className="Img_Perfil"
-              src={formData.img || "https://via.placeholder.com/100?text=Foto"}
-              alt="Profile"
+              src={formData.img || "https://via.placeholder.com/120?text=Logo"}
+              alt="Foto de perfil"
             />
 
             <div className="Perfil-Botoes-Imagem">
               <label htmlFor="image-upload" className="Botao-Imagem Alterar-Foto">
                 Alterar
               </label>
-
               {formData.img && (
                 <button
                   type="button"
                   className="Botao-Imagem Remover-Foto"
-                  onClick={() => setFormData((prev) => ({ ...prev, img: "" }))}
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, img: "" }))
+                  }
                 >
                   Remover
                 </button>
@@ -102,11 +140,10 @@ export default function Perfil_Empresa() {
             />
           </div>
 
-          {/* Campo: Nome */}
-          <label htmlFor="nome">Nome do Usuário</label>
+          {/* Nome */}
+          <label htmlFor="nome">Nome da Empresa</label>
           <div className="Dados_Perfil">
             <input
-              required
               type="text"
               id="nome"
               name="nome"
@@ -114,6 +151,7 @@ export default function Perfil_Empresa() {
               value={formData.nome}
               onChange={handleChange}
               readOnly={!editMode.nome}
+              required
             />
             <button
               type="button"
@@ -127,11 +165,10 @@ export default function Perfil_Empresa() {
             </button>
           </div>
 
-          {/* Campo: Email */}
+          {/* Email */}
           <label htmlFor="email">Email</label>
           <div className="Dados_Perfil">
             <input
-              required
               type="email"
               id="email"
               name="email"
@@ -139,6 +176,7 @@ export default function Perfil_Empresa() {
               value={formData.email}
               onChange={handleChange}
               readOnly={!editMode.email}
+              required
             />
             <button
               type="button"
@@ -152,11 +190,10 @@ export default function Perfil_Empresa() {
             </button>
           </div>
 
-          {/* Campo: Senha */}
+          {/* Senha */}
           <label htmlFor="senha">Senha</label>
           <div className="Dados_Perfil">
             <input
-              required
               type="password"
               id="senha"
               name="senha"
@@ -164,6 +201,7 @@ export default function Perfil_Empresa() {
               value={formData.senha}
               onChange={handleChange}
               readOnly={!editMode.senha}
+              required
             />
             <button
               type="button"
@@ -177,27 +215,27 @@ export default function Perfil_Empresa() {
             </button>
           </div>
 
-          {/* Botão Alterar */}
           <div className="Alterar-botao-area">
             <button className="Alterar-botao" type="submit">
-              Alterar
+              Salvar Alterações
             </button>
           </div>
         </form>
 
         {/* Tabela de Avaliações */}
         <Table className="Avaliacao-Pesona">
+          <TableCaption>Avaliações Recebidas</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="Titulo-Tabela">Título/Razão</TableHead>
-              <TableHead className="Titulo-Tabela">Avaliação</TableHead>
+              <TableHead className="Titulo-Tabela">Título / Razão</TableHead>
+              <TableHead className="Titulo-Tabela">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {resposta.map((item, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium">{item.titulo}</TableCell>
-                <TableCell className="font-medium">
+                <TableCell>{item.titulo}</TableCell>
+                <TableCell>
                   <span
                     style={{
                       color:
@@ -205,9 +243,7 @@ export default function Perfil_Empresa() {
                           ? "#C50000"
                           : item.status === "Resolvida"
                           ? "#00B327"
-                          : item.status === "Em andamento"
-                          ? "#666"
-                          : "#000",
+                          : "#666",
                     }}
                   >
                     {item.status}

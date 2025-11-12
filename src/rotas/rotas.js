@@ -10,6 +10,7 @@ import PerfilE from '../paginas/Perfil_Empresa/perfil_Empresa'
 import Cadastro_Empresa from '../paginas/cadastro-Empresa/cadastro-Empresa'
 import Resultados from '../paginas/Resultados/resultados'
 import Empresa from '../paginas/Empresa/empresa'
+import Sistema_Empresa from '../paginas/Sistema-Empresa/Sistema-Empresa'
 
 const Rotas = () => {
   return (
@@ -19,11 +20,12 @@ const Rotas = () => {
         <Route path='/cadastro_empresa' element={<Cadastro_Empresa/>} />
         <Route element={<PrivateRoute/>}>
           <Route path='/home' element={<Home/>}/>
-          <Route path='/sistema' element={<Sistema/>}/>
+          <Route path='/sistema/usuario' element={<Sistema/>}/>
           <Route path='/perfil/usuario' element={<PerfilU/>}/>
           <Route path='/perfil/empresa' element={<PerfilE/>}/>
           <Route path='/resultados' element={<Resultados/>}/>
           <Route path='/empresa/:id' element={<Empresa/>}/>
+          <Route path='/sistema/empresa' element={<Sistema_Empresa/>}/>
         </Route>
     </Routes>
   )
