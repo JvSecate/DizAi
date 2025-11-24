@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './cadastro_empresa.css';
-import logo from '../../assets/img/LogoSistema Fundo_Transparenrte.png';
+import logo from '../../assets/img/logo.png';
 
 const CadastroEmpresa = () => {
   const navigate = useNavigate();

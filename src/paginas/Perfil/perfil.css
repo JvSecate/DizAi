@@ -1,0 +1,146 @@
+:root {
+  --verde-agua-claro: #04D9B2;
+  --vermelho-claro: #F2293D;
+  --azul-claro: #A0F2CC;
+  --branco: #F2F1F0;
+  --verde-azul-escuro: #17A68C;
+}
+.Fundo_Perfil {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("../../assets/img/3786391_78792 1.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+.Painel {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120px;
+  gap: 30px;
+}
+.Perfil-Card {
+  width: 100%;
+  background: var(--azul-claro);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.Img_Perfil {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--verde-azul-escuro);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.Perfil-Info {
+  flex: 1;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.Perfil-Nome {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.Perfil-Label {
+  font-size: 1rem;
+}
+
+.Edit_Profile_Button {
+  align-self: flex-start;
+  margin-top: 10px;
+  border: none;
+  background: var(--verde-azul-escuro);
+  padding: 8px 12px;
+  color: var(--branco);
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.Edit_Profile_Button:hover {
+  background: var(--verde-agua-claro);
+  color: black;
+}
+
+.Dados {
+  width: 100%;
+  height: 40px;
+  background: var(--verde-azul-escuro);
+  border: 1px solid var(--verde-azul-escuro);
+  color: var(--branco);
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.Alterar-botao-area {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.Alterar-botao {
+  width: 60%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid var(--verde-azul-escuro);
+  background: var(--verde-azul-escuro);
+  color: var(--branco);
+  font-weight: 600;
+  transition: 0.35s ease;
+}
+
+.Alterar-botao:hover {
+  background: var(--verde-agua-claro);
+  color: black;
+}
+
+.Avaliacao-Pesona {
+  padding: 20px;
+  background: var(--azul-claro);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 100%;
+  overflow-x: auto;
+  max-width: 900px;
+}
+
+.Titulo-Tabela {
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .Perfil-Card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .Perfil-Info {
+    align-items: center;
+  }
+
+  .Edit_Profile_Button {
+    align-self: center;
+  }
+}

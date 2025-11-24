@@ -6,8 +6,7 @@ import Cadastro_Empresa from '../paginas/Cadastro_Empresa/cadastro_empresa'
 import Home from '../paginas/Home/home'
 import PrivateRoute from './privateRotas'
 import Sistema from '../paginas/Sistema/sistema'
-import PerfilU from '../paginas/Perfil_Usuario/perfil_usuario'
-import PerfilE from '../paginas/Perfil_Empresa/perfil_empresa'
+import Perfil from '../paginas/Perfil/perfil'
 import Resultados from '../paginas/Resultados/resultados'
 import Empresa from '../paginas/Empresa/empresa'
 import Sistema_Empresa from '../paginas/Sistema-Empresa/Sistema-Empresa'
@@ -21,8 +20,7 @@ const Rotas = () => {
         <Route element={<PrivateRoute/>}>
           <Route path='/home' element={<Home/>}/>
           <Route path='/sistema/usuario' element={<Sistema/>}/>
-          <Route path='/perfil/usuario' element={<PerfilU/>}/>
-          <Route path='/perfil/empresa' element={<PerfilE/>}/>
+          <Route path='/perfil' element={<Perfil/>}/>
           <Route path='/resultados' element={<Resultados/>}/>
           <Route path='/empresa/:id' element={<Empresa/>}/>
           <Route path='/sistema/empresa' element={<Sistema_Empresa/>}/>
