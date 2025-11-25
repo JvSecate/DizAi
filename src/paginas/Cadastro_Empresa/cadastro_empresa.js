@@ -1,71 +1,82 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './cadastro-Empresa.css';
-import logo from '../../assets/img/LogoSistema Fundo_Transparenrte.png';
+import './cadastro_empresa.css';
+import logo from '../../assets/img/logo.png';
+import { API_URL } from '../../config/config';
+import { salvarUsuario } from "../../utils/auth";
 
 const CadastroEmpresa = () => {
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     nome: '',
     email: '',
     senha: '',
     confirmarSenha: '',
-    cnpj: ''
+    cnpj: '',
+    setor: '',
+    descricao: ''
   });
+
   const [erro, setErro] = useState('');
 
-  function handleChange(e) {
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  }
 
-  function handleCadastro(e) {
+  const handleCadastro = async (e) => {
     e.preventDefault();
+    setErro("");
 
-    // Valida se senha e confirmar senha coincidem
     if (form.senha !== form.confirmarSenha) {
-      setErro('As senhas não coincidem!');
+      setErro("As senhas não conferem!");
       return;
     }
 
-    // Pega lista de empresas do localStorage
-    const listaEmpresas = JSON.parse(localStorage.getItem("empresas") || "[]");
-
-    // Verifica se já existe empresa com o mesmo email
-    const emailExiste = listaEmpresas.some(e => e.email === form.email);
-    if (emailExiste) {
-      setErro('Já existe uma empresa cadastrada com este email!');
-      return;
-    }
-
-    // Cria objeto da nova empresa
-    const novaEmpresa = {
+    const empresaData = {
       nome: form.nome,
       email: form.email,
       senha: form.senha,
-      cnpj: form.cnpj
+      cnpj: form.cnpj,
+      setor: form.setor || null,
+      descricao: form.descricao || null
     };
 
-    // Adiciona na lista e salva no localStorage
-    listaEmpresas.push(novaEmpresa);
-    localStorage.setItem("empresas", JSON.stringify(listaEmpresas));
+    try {
+      const response = await fetch(`${API_URL}/empresas`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(empresaData)
+      });
 
-    // Marca a empresa como logada (para Perfil_Empresa)
-    localStorage.setItem("empresaLogado", JSON.stringify(novaEmpresa));
+      if (!response.ok) {
+        const err = await response.json().catch(() => null);
+        setErro(err?.detail || "Erro ao cadastrar.");
+        return;
+      }
 
-    alert("Cadastro realizado com sucesso!");
-    navigate("/home");
-  }
+      const empresa = await response.json();
+      salvarUsuario(empresa);
+
+      alert("Cadastro realizado com sucesso!");
+      navigate("/sistema/empresa");
+
+    } catch (error) {
+      console.error("Erro ao conectar com API:", error);
+      setErro("Erro ao conectar com o servidor.");
+    }
+  };
 
   return (
     <div className='cadastro_container'>
       <div className='area_cadastro'>
         <form className='cadastro_dados' onSubmit={handleCadastro}>
+          
           {erro && <p className="erro-msg">{erro}</p>}
 
           <div className='cadastro-item'>
             <label htmlFor="nome">Nome da Empresa</label>
-            <input 
-              required 
+            <input
+              required
               type="text"
               id="nome"
               name="nome"
@@ -76,8 +87,8 @@ const CadastroEmpresa = () => {
 
           <div className='cadastro-item'>
             <label htmlFor="email">Email</label>
-            <input 
-              required 
+            <input
+              required
               type="email"
               id="email"
               name="email"
@@ -89,8 +100,8 @@ const CadastroEmpresa = () => {
           <div className='Area_senha'>
             <div className='cadastro-item'>
               <label htmlFor="senha">Senha</label>
-              <input 
-                required 
+              <input
+                required
                 type="password"
                 id="senha"
                 name="senha"
@@ -100,12 +111,12 @@ const CadastroEmpresa = () => {
             </div>
 
             <div className='cadastro-item'>
-              <label htmlFor='confirmarSenha'>Confirmar Senha</label>
-              <input 
+              <label htmlFor="confirmarSenha">Confirmar Senha</label>
+              <input
                 required
-                type='password' 
-                id='confirmarSenha'
-                name='confirmarSenha'
+                type="password"
+                id="confirmarSenha"
+                name="confirmarSenha"
                 value={form.confirmarSenha}
                 onChange={handleChange}
               />
@@ -114,12 +125,33 @@ const CadastroEmpresa = () => {
 
           <div className='cadastro-item'>
             <label htmlFor='cnpj'>CNPJ</label>
-            <input 
+            <input
               required
-              type='text' 
+              type='text'
               id='cnpj'
               name='cnpj'
               value={form.cnpj}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className='cadastro-item'>
+            <label htmlFor='setor'>Setor (opcional)</label>
+            <input
+              type='text'
+              id='setor'
+              name='setor'
+              value={form.setor}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className='cadastro-item'>
+            <label htmlFor='descricao'>Descrição (opcional)</label>
+            <textarea
+              id='descricao'
+              name='descricao'
+              value={form.descricao}
               onChange={handleChange}
             />
           </div>
@@ -131,7 +163,7 @@ const CadastroEmpresa = () => {
 
             <div className='tem-cadastro'>
               Cadastrar como Usuário?
-              <Link className='login-link' to='/cadastro'>
+              <Link className='login-link' to='/cadastro/usuario'>
                 Clique aqui.
               </Link>
             </div>
@@ -143,14 +175,15 @@ const CadastroEmpresa = () => {
               </Link>
             </div>
           </div>
+
         </form>
       </div>
 
       <div className='banner_cadastro'>
         <div className='logo_container'>
-          <img className='logo_dizai' src={logo} alt="Logo" width={350} height={350}/>
+          <img className='logo_dizai' src={logo} alt="Logo" width={350} height={350} />
         </div>
-        <h1>Cadastro<br/>Empresa</h1>
+        <h1>Cadastro<br />Empresa</h1>
       </div>
     </div>
   );

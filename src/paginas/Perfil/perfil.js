@@ -1,212 +1,256 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "../../components/ui/table";
-import './perfil.css';
+import usuarioImg from "../../assets/img/usuario.png";
+import empresaImg from "../../assets/img/empresa.png";
 import { BsPencilSquare } from "react-icons/bs";
+import { API_URL } from '../../config/config';
+import './perfil.css';
+import { salvarUsuario } from "../../utils/auth";
 
 export default function Perfil() {
-  const [editMode, setEditMode] = useState({
-    nome: false,
-    email: false,
-    senha: false,
-  });
+  const [editMode, setEditMode] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
     senha: "",
+    img: "",
+    cnpj: "",
+    setor: "",
+    descricao: ""
   });
 
   const [mensagem, setMensagem] = useState('');
+  const [tipo, setTipo] = useState(null);
+  const [id, setId] = useState(null);
+  const [empresaId, setEmpresaId] = useState(null);
+  const [feedbacks, setFeedbacks] = useState([]);
 
-  // 🔹 Carrega os dados do usuário logado
   useEffect(() => {
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-    if (usuarioLogado) {
-      setFormData({
-        nome: usuarioLogado.nome,
-        email: usuarioLogado.email,
-        senha: usuarioLogado.senha,
-      });
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuario) return;
+
+    setTipo(usuario.tipo);
+    setId(usuario.id);
+
+    if (usuario.tipo === "usuario") {
+      fetch(`${API_URL}/usuarios/${usuario.id}`)
+        .then(res => res.json())
+        .then(data => {
+          setFormData({
+            nome: data.nome,
+            email: data.email,
+            senha: "",
+            img: usuarioImg,
+            cnpj: "",
+            setor: "",
+            descricao: ""
+          });
+        });
+    }
+
+    if (usuario.tipo === "empresa") {
+      setEmpresaId(usuario.empresa_id);
+
+      fetch(`${API_URL}/empresas/${usuario.empresa_id}`)
+        .then(res => res.json())
+        .then(empresa => {
+          fetch(`${API_URL}/usuarios/${usuario.id}`)
+            .then(res => res.json())
+            .then(user => {
+              setFormData({
+                nome: user.nome,
+                email: user.email,
+                senha: "",
+                img: empresaImg,
+                cnpj: empresa.cnpj,
+                setor: empresa.setor,
+                descricao: empresa.descricao
+              });
+            });
+        });
     }
   }, []);
 
-  // 🔹 Alterna modo de edição
-  const handleToggleEdit = (campo) => {
-    setEditMode((prev) => ({
-      ...prev,
-      [campo]: !prev[campo],
-    }));
-  };
+  useEffect(() => {
+    if (!id || !tipo) return;
 
-  // 🔹 Atualiza os valores digitados
+    fetch(`${API_URL}/feedbacks`)
+      .then(res => res.json())
+      .then(data => {
+        if (tipo === "usuario") {
+          setFeedbacks(data.filter(fb => fb.usuario_id === id));
+        } else {
+          setFeedbacks(data.filter(fb => fb.empresa_id === empresaId));
+        }
+      });
+  }, [id, tipo, empresaId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // 🔹 Salva as alterações no localStorage
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+    const bodyToSend = {
+      nome: formData.nome,
+      email: formData.email
+    };
 
-    // Atualiza o usuário logado e a lista geral
-    const usuariosAtualizados = usuarios.map((u) =>
-      u.email === usuarioLogado.email ? formData : u
-    );
+    if (formData.senha.trim() !== "") {
+      bodyToSend.senha = formData.senha;
+    }
 
-    localStorage.setItem('usuarios', JSON.stringify(usuariosAtualizados));
-    localStorage.setItem('usuarioLogado', JSON.stringify(formData));
+    const rota = tipo === "usuario" ? "usuarios" : "usuarios";
+    
+    let response;
+    if (tipo === "usuario"){
+      response = await fetch(`${API_URL}/usuarios/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bodyToSend)
+      });
+    }
 
-    setMensagem('Dados atualizados com sucesso!');
-    setEditMode({ nome: false, email: false, senha: false });
+    else if (tipo === "empresa") {
+      response = await fetch(`${API_URL}/empresas/${empresaId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: bodyToSend.nome,
+          email: bodyToSend.email,
+          senha: bodyToSend.senha,
+          cnpj: formData.cnpj,
+          setor: formData.setor,
+          descricao: formData.descricao
+        })
+      });
+    }
+    if (!response.ok) {
+        setMensagem("Erro ao atualizar");
+        return;
+    }
+    const updated = await response.json();
 
-    // Esconde mensagem após 3 segundos
-    setTimeout(() => setMensagem(''), 3000);
+    salvarUsuario({
+      id: updated.id,
+      nome: updated.nome,
+      email: updated.email,
+      tipo,
+      empresa_id: empresaId
+    });
+
+    setMensagem("Dados atualizados");
+    setEditMode(false);
+
+    setTimeout(() => setMensagem(""), 3000);
   };
-
-  // 🔹 Lista fictícia (exemplo)
-  const resposta = [
-    { titulo: "Produto entregue com atraso", status: "Resolvida" },
-    { titulo: "Atendimento ruim", status: "Não resolvida" },
-    { titulo: "Problema no cadastro", status: "Em andamento" },
-    { titulo: "Pedido duplicado", status: "Resolvida" },
-  ];
 
   return (
     <div className="Fundo_Perfil">
       <div className="Painel">
-        <form className="Tabela_Perfil" onSubmit={handleSubmit}>
-          <label htmlFor="nome">Nome do Usuário</label>
-          <div className="Dados_Perfil">
-            <input
-              required
-              type="text"
-              id="nome"
-              name="nome"
-              className="Dados"
-              value={formData.nome}
-              onChange={handleChange}
-              readOnly={!editMode.nome}
-            />
-            <button
-              type="button"
-              className="Edit_Button"
-              onClick={() => handleToggleEdit("nome")}
-            >
-              <BsPencilSquare
-                name='Edit'
-                size={20}
-                color={editMode.nome ? '#04D9B2' : 'black'}
-              />
-            </button>
-          </div>
+        <div className="Perfil-Card">
+          <img className="Img_Perfil" src={formData.img} alt="Foto" />
 
-          <label htmlFor="email">Email</label>
-          <div className="Dados_Perfil">
-            <input
-              required
-              type="email"
-              id="email"
-              name="email"
-              className="Dados"
-              value={formData.email}
-              onChange={handleChange}
-              readOnly={!editMode.email}
-            />
-            <button
-              type="button"
-              className="Edit_Button"
-              onClick={() => handleToggleEdit("email")}
-            >
-              <BsPencilSquare
-                name='Edit'
-                size={20}
-                color={editMode.email ? '#04D9B2' : 'black'}
-              />
-            </button>
-          </div>
+          <div className="Perfil-Info">
+            {!editMode && (
+              <>
+                <div className="Perfil-Nome">{formData.nome}</div>
 
-          <label htmlFor="senha">Senha</label>
-          <div className="Dados_Perfil">
-            <input
-              required
-              type="password"
-              id="senha"
-              name="senha"
-              className="Dados"
-              value={formData.senha}
-              onChange={handleChange}
-              readOnly={!editMode.senha}
-            />
-            <button
-              type="button"
-              className="Edit_Button"
-              onClick={() => handleToggleEdit("senha")}
-            >
-              <BsPencilSquare
-                name='Edit'
-                size={20}
-                color={editMode.senha ? '#04D9B2' : 'black'}
-              />
-            </button>
-          </div>
+                <p className="Perfil-Label"><strong>Email:</strong> {formData.email}</p>
 
-          {mensagem && (
-            <p style={{ color: '#00b327ff', fontWeight: 'bold', marginTop: '10px' }}>
-              {mensagem}
-            </p>
-          )}
+                {tipo === "empresa" && (
+                  <>
+                    <p className="Perfil-Label"><strong>CNPJ:</strong> {formData.cnpj}</p>
+                    <p className="Perfil-Label"><strong>Setor:</strong> {formData.setor}</p>
+                    <p className="Perfil-Label"><strong>Descrição:</strong> {formData.descricao}</p>
+                  </>
+                )}
 
-          <div className="Alterar-botao-area">
-            <button className="Alterar-botao" type="submit">
-              Alterar
-            </button>
+                <button
+                  type="button"
+                  className="Edit_Profile_Button"
+                  onClick={() => setEditMode(true)}
+                >
+                  <BsPencilSquare size={18} /> Editar
+                </button>
+              </>
+            )}
+
+            {editMode && (
+              <form onSubmit={handleSubmit}>
+                <label>Nome</label>
+                <input className="Dados" name="nome" value={formData.nome} onChange={handleChange} />
+
+                <label>Email</label>
+                <input className="Dados" name="email" value={formData.email} onChange={handleChange} />
+
+                <label>Senha</label>
+                <input className="Dados" type="password" name="senha" value={formData.senha} onChange={handleChange} />
+
+                {tipo === "empresa" && (
+                  <>
+                    <label>CNPJ</label>
+                    <input className="Dados" name="cnpj" value={formData.cnpj} onChange={handleChange} />
+
+                    <label>Setor</label>
+                    <input className="Dados" name="setor" value={formData.setor} onChange={handleChange} />
+
+                    <label>Descrição</label>
+                    <textarea className="Dados" name="descricao" value={formData.descricao} onChange={handleChange} />
+                  </>
+                )}
+
+                {mensagem && <p className="Mensagem-Sucesso">{mensagem}</p>}
+
+                <div className="Alterar-botao-area">
+                  <button type="submit" className="Alterar-botao">Salvar</button>
+                </div>
+
+                <button type="button" className="Edit_Profile_Button" onClick={() => setEditMode(false)}>
+                  Cancelar
+                </button>
+              </form>
+            )}
           </div>
-        </form>
+        </div>
 
         <Table className="Avaliacao-Pesona">
           <TableHeader>
             <TableRow>
-              <TableHead className="Titulo-Tabela">Título/Razão</TableHead>
+              <TableHead className="Titulo-Tabela">Título</TableHead>
               <TableHead className="Titulo-Tabela">Status</TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {resposta.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell className="font-medium">{item.titulo}</TableCell>
-                <TableCell className="font-medium">
+            {feedbacks.map(fb => (
+              <TableRow key={fb.id}>
+                <TableCell>{fb.titulo}</TableCell>
+                <TableCell>
                   <span
                     style={{
                       color:
-                        item.status === "Não resolvida"
-                          ? "#c50000ff"
-                          : item.status === "Resolvida"
-                          ? "#00b327ff"
-                          : item.status === "Em andamento"
-                          ? "#666666"
-                          : "#000",
+                        fb.status === "Não resolvida"
+                          ? "#C50000"
+                          : fb.status === "Resolvida"
+                          ? "#00B327"
+                          : "#666"
                     }}
                   >
-                    {item.status}
+                    {fb.status}
                   </span>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+
       </div>
     </div>
   );

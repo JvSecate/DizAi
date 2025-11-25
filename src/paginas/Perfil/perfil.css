@@ -1,12 +1,10 @@
-:root { 
+:root {
   --verde-agua-claro: #04D9B2;
   --vermelho-claro: #F2293D;
   --azul-claro: #A0F2CC;
   --branco: #F2F1F0;
   --verde-azul-escuro: #17A68C;
 }
-
-/* ===== Fundo da página ===== */
 .Fundo_Perfil {
   width: 100%;
   min-height: 100vh;
@@ -16,69 +14,90 @@
   background-position: center;
   display: flex;
   justify-content: center;
-  align-items: center;
   padding: 40px 20px;
   box-sizing: border-box;
 }
-
-/* ===== Painel principal ===== */
 .Painel {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
   width: 100%;
-  max-width: 900px; /* largura máxima do painel */
-}
-
-/* ===== Formulário Perfil ===== */
-.Tabela_Perfil {
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 25px;
-  border-radius: 20px;
-  background: var(--azul-claro);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  padding-top: 120px;
+  gap: 30px;
+}
+.Perfil-Card {
   width: 100%;
-  max-width: 400px; /* largura proporcional */
+  background: var(--azul-claro);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-/* ===== Campos do Formulário ===== */
-.Dados_Perfil {
+.Img_Perfil {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--verde-azul-escuro);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.Perfil-Info {
+  flex: 1;
+  min-width: 250px;
   display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.Perfil-Nome {
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.Perfil-Label {
+  font-size: 1rem;
+}
+
+.Edit_Profile_Button {
+  align-self: flex-start;
+  margin-top: 10px;
+  border: none;
+  background: var(--verde-azul-escuro);
+  padding: 8px 12px;
+  color: var(--branco);
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.Edit_Profile_Button:hover {
+  background: var(--verde-agua-claro);
+  color: black;
 }
 
 .Dados {
-  flex: 1;
-  border-radius: 10px;
+  width: 100%;
   height: 40px;
-  padding: 0 10px;
   background: var(--verde-azul-escuro);
   border: 1px solid var(--verde-azul-escuro);
   color: var(--branco);
-  font-size: 0.9em;
-}
-
-.Edit_Button {
-  margin-left: 8px;
   border-radius: 10px;
-  background: var(--verde-azul-escuro);
-  border: 2px solid #000;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+  padding: 0 10px;
 }
 
-/* ===== Botão Alterar ===== */
 .Alterar-botao-area {
-  width: 100%;
+  margin-top: 15px;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .Alterar-botao {
@@ -89,65 +108,39 @@
   background: var(--verde-azul-escuro);
   color: var(--branco);
   font-weight: 600;
-  transition: 0.35s;
+  transition: 0.35s ease;
 }
 
 .Alterar-botao:hover {
-  background-color: var(--verde-agua-claro);
+  background: var(--verde-agua-claro);
   color: black;
 }
 
-.Alterar-botao:active {
-  transform: scale(0.95);
-}
-
-/* ===== Tabela de Avaliações ===== */
 .Avaliacao-Pesona {
-  display: flex;
-  flex-direction: column;
   padding: 20px;
-  border-radius: 20px;
   background: var(--azul-claro);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   width: 100%;
-  max-width: 400px; /* mesma largura do formulário */
   overflow-x: auto;
+  max-width: 900px;
 }
 
 .Titulo-Tabela {
   font-weight: 600;
-  text-align: left;
 }
 
-/* Status colorido */
-.Avaliacao-Pesona span {
-  font-weight: 600;
-}
-
-/* ===== Responsividade ===== */
-@media (max-width: 900px) {
-  .Painel {
+@media (max-width: 700px) {
+  .Perfil-Card {
     flex-direction: column;
+    text-align: center;
+  }
+
+  .Perfil-Info {
     align-items: center;
   }
 
-  .Tabela_Perfil,
-  .Avaliacao-Pesona {
-    max-width: 90%;
-  }
-
-  .Alterar-botao {
-    width: 80%;
-  }
-}
-
-@media (max-width: 480px) {
-  .Dados {
-    font-size: 0.85em;
-  }
-
-  .Alterar-botao {
-    width: 90%;
-    font-size: 0.85em;
+  .Edit_Profile_Button {
+    align-self: center;
   }
 }

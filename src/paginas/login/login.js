@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './login.css';
-import logo from '../../assets/img/LogoSistema Fundo_Transparenrte.png';
+import logo from '../../assets/img/logo.png';
+import { API_URL } from '../../config/config';
+import { salvarUsuario } from "../../utils/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,29 +14,33 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErro("");
 
-    const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]");
-    const empresas = JSON.parse(localStorage.getItem("empresas") || "[]");
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
 
-    // Procura usuário
-    const usuario = usuarios.find(u => u.email === form.email && u.senha === form.senha);
-    if (usuario) {
-      localStorage.setItem("user", JSON.stringify({ ...usuario, tipo: 'usuario' }));
-      navigate("/home");
-      return;
+      if (!response.ok) {
+        setErro("Email ou senha incorretos!");
+        return;
+      }
+
+      const user = await response.json();
+      salvarUsuario(user);
+
+      navigate("/sistema/usuario");
+
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      setErro("Erro no servidor. Tente novamente mais tarde.");
     }
-
-    // Procura empresa
-    const empresa = empresas.find(e => e.email === form.email && e.senha === form.senha);
-    if (empresa) {
-      localStorage.setItem("user", JSON.stringify({ ...empresa, tipo: 'empresa' }));
-      navigate("/home");
-      return;
-    }
-
-    setErro("Email ou senha incorretos!");
   };
 
   return (
@@ -80,8 +86,8 @@ const Login = () => {
             </button>
 
             <div className='n-tem-cadastro'>
-              Não tem conta?
-              <Link className='cadastro-link' to='/cadastro'>
+              Não tem uma conta?
+              <Link className='cadastro-link' to='/cadastro/usuario'>
                 Cadastre-se aqui.
               </Link>
             </div>

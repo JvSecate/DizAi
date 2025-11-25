@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import AuthProvider from './contexto/authcontexto';
+import AuthProvider from './context/authcontext';
 import Rotas from './rotas/rotas';
 
 function App() {

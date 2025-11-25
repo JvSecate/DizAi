@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import './header.css';
-import Logo from '../../../assets/img/LogoSistema Fundo_Transparenrte.png';
+import Logo from '../../../assets/img/logo.png';
 import { FaSearch } from "react-icons/fa";
 
 const Header = () => {
@@ -18,13 +18,6 @@ const Header = () => {
 
           <nav className="menu-nav">
             <Link
-              className={`Button_Op ${location.pathname === '/home' ? 'active' : ''}`}
-              to="/home"
-            >
-              Home
-            </Link>
-
-            <Link
               className={`Button_Op ${
                 location.pathname.includes('/sistema') ? 'active' : ''
               }`}
@@ -36,20 +29,20 @@ const Header = () => {
             {userType === "empresa" ? (
               <Link
                 className={`Button_Op ${
-                  location.pathname.includes('/perfil/empresa') ? 'active' : ''
+                  location.pathname.includes('/perfil') ? 'active' : ''
                 }`}
-                to="/perfil/empresa"
+                to="/perfil"
               >
-                Perfil Empresa
+                Perfil
               </Link>
             ) : (
               <Link
                 className={`Button_Op ${
-                  location.pathname.includes('/perfil/usuario') ? 'active' : ''
+                  location.pathname.includes('/perfil') ? 'active' : ''
                 }`}
-                to="/perfil/usuario"
+                to="/perfil"
               >
-                Perfil Usuário
+                Perfil
               </Link>
             )}
 
