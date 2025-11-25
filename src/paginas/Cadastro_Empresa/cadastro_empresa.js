@@ -58,7 +58,7 @@ const CadastroEmpresa = () => {
       salvarUsuario(empresa);
 
       alert("Cadastro realizado com sucesso!");
-      navigate("/home");
+      navigate("/sistema/empresa");
 
     } catch (error) {
       console.error("Erro ao conectar com API:", error);

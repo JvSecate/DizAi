@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import "./sistema_Sistema.css"
+import "./sistema_empresa.css"
 import ImgWomen from '../../assets/img/image 1.png'
 
 const Sistema_Empresa = () => {

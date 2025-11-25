@@ -50,7 +50,7 @@ const CadastroUsuario = () => {
       salvarUsuario(usuario);
 
       alert("Cadastro realizado com sucesso!");
-      navigate("/home");
+      navigate("/sistema/usuario");
 
     } catch (error) {
       console.error("Erro ao conectar com API:", error);

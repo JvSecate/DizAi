@@ -18,13 +18,6 @@ const Header = () => {
 
           <nav className="menu-nav">
             <Link
-              className={`Button_Op ${location.pathname === '/home' ? 'active' : ''}`}
-              to="/home"
-            >
-              Home
-            </Link>
-
-            <Link
               className={`Button_Op ${
                 location.pathname.includes('/sistema') ? 'active' : ''
               }`}

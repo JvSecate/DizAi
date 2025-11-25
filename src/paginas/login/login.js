@@ -35,7 +35,7 @@ const Login = () => {
       const user = await response.json();
       salvarUsuario(user);
 
-      navigate("/home");
+      navigate("/sistema/usuario");
 
     } catch (error) {
       console.error("Erro ao fazer login:", error);
