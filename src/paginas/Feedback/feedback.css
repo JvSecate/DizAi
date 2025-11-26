@@ -1,0 +1,39 @@
+.Feedback_Pagina {
+  padding-top: 120px;
+  max-width: 700px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.Feedback_Empresa {
+  font-size: 22px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.Feedback_Titulo {
+  text-align: center;
+  color: #04D9B2;
+  font-size: 2rem;
+}
+
+.Feedback_Conteudo {
+  background-color: #17A68C;
+  padding: 20px;
+  border-radius: 10px;
+  color: #f2f1f0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.Feedback_Conteudo p {
+  margin: 8px 0;
+}
+
+.Mensagem {
+  text-align: center;
+  font-weight: bold;
+  color: black;
+}

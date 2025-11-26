@@ -8,6 +8,7 @@ import { BsPencilSquare } from "react-icons/bs";
 import { API_URL } from '../../config/config';
 import './perfil.css';
 import { salvarUsuario } from "../../utils/auth";
+import { Link } from "react-router-dom";
 
 export default function Perfil() {
   const [editMode, setEditMode] = useState(false);
@@ -224,6 +225,7 @@ export default function Perfil() {
           <TableHeader>
             <TableRow>
               <TableHead className="Titulo-Tabela">Título</TableHead>
+              <TableHead className="Titulo-Tabela">Empresa</TableHead>
               <TableHead className="Titulo-Tabela">Status</TableHead>
             </TableRow>
           </TableHeader>
@@ -231,14 +233,26 @@ export default function Perfil() {
           <TableBody>
             {feedbacks.map(fb => (
               <TableRow key={fb.id}>
-                <TableCell>{fb.titulo}</TableCell>
+
+                <TableCell>
+                  <Link
+                    to={`/feedback/${fb.id}`}
+                    style={{ textDecoration: "none", color: "#0070f3" }}
+                  >
+                    {fb.titulo}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  {fb.empresa_nome || fb.empresa || "Desconhecido"}
+                </TableCell>
+
                 <TableCell>
                   <span
                     style={{
                       color:
-                        fb.status === "Não resolvida"
+                        fb.status === "Aberto"
                           ? "#C50000"
-                          : fb.status === "Resolvida"
+                          : fb.status === "Respondida"
                           ? "#00B327"
                           : "#666"
                     }}
@@ -246,10 +260,12 @@ export default function Perfil() {
                     {fb.status}
                   </span>
                 </TableCell>
+
               </TableRow>
             ))}
           </TableBody>
         </Table>
+
 
       </div>
     </div>

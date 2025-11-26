@@ -9,6 +9,7 @@ import PrivateRoute from './privateRotas'
 import Perfil from '../paginas/Perfil/perfil'
 import Resultados from '../paginas/Resultados/resultados'
 import Empresa from '../paginas/Empresa/empresa'
+import Feedback from '../paginas/Feedback/feedback'
 
 const Rotas = () => {
   return (
@@ -22,6 +23,7 @@ const Rotas = () => {
           <Route path='/resultados' element={<Resultados/>}/>
           <Route path='/empresa/:id' element={<Empresa/>}/>
           <Route path='/sistema/empresa' element={<Sistema_Empresa/>}/>
+          <Route path="/feedback/:id" element={<Feedback />} />
         </Route>
     </Routes>
   )

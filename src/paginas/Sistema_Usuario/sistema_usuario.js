@@ -1,9 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./sistema_usuario.css";
 import ImgWomen from '../../assets/img/image 1.png';
 import { API_URL } from "../../config/config";
 
 const Sistema = () => {
+  const navigate = useNavigate();
   const [empresaTexto, setEmpresaTexto] = useState("");
   const [empresaId, setEmpresaId] = useState(null);
   const [empresas, setEmpresas] = useState([]);
@@ -73,14 +75,15 @@ const Sistema = () => {
       return;
     }
 
-    setMensagem("Avaliação enviada com sucesso.");
+    const data = await response.json();
+
+    navigate(`/feedback/${data.id}`);
 
     setEmpresaTexto("");
     setEmpresaId(null);
     setTitulo("");
     setConteudo("");
-
-    setTimeout(() => setMensagem(""), 3000);
+    setMensagem(""); 
   };
 
   return (
