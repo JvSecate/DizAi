@@ -3,7 +3,7 @@ export function salvarUsuario(usuario) {
     id: usuario.id,
     nome: usuario.nome,
     email: usuario.email,
-    tipo: usuario.tipo,
+    tipo: usuario.tipo,  //Usuario, Empresa
     empresa_id: usuario.empresa_id || null,
     token: usuario.token || null
   }));
