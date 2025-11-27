@@ -7,9 +7,9 @@ import {
 import usuarioImg from "../../assets/img/usuario.png";
 import empresaImg from "../../assets/img/empresa.png";
 import { API_URL } from '../../config/config';
-import './perfil.css';
 import { salvarUsuario } from "../../utils/auth";
 import { mapaNotas, corNota, formatarData, conf_min} from "../../utils/feedback_info";
+import './perfil.css';
 
 export default function Perfil() {
   const [editMode, setEditMode] = useState(false);

@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto; /* enables vertical scrolling */
+  overflow-x: hidden; /* prevents unwanted horizontal scroll */
+}
+
+* {
+  box-sizing: border-box; /* ensures padding/margin doesn’t break layout */
+}
