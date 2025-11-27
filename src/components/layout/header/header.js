@@ -7,8 +7,19 @@ import { FaSearch } from "react-icons/fa";
 const Header = () => {
   const location = useLocation();
   const isResultadosPage = location.pathname === "/resultados";
-  const userData = JSON.parse(localStorage.getItem("user"));
+  const userData = JSON.parse(localStorage.getItem("usuarioLogado"));
   const userType = userData?.tipo;
+
+  let homeLabel = "Avalie aqui";
+  let homeLink = "/sistema/usuario";
+
+  if (userType === "empresa") {
+    homeLabel = "Avaliações";
+    homeLink = "/sistema/empresa";
+  } else if (userType === "admin") {
+    homeLabel = "Admin";
+    homeLink = "/sistema/admin";
+  }
 
   return (
     <Fragment>
@@ -21,30 +32,19 @@ const Header = () => {
               className={`Button_Op ${
                 location.pathname.includes('/sistema') ? 'active' : ''
               }`}
-              to={userType === "empresa" ? "/sistema/empresa" : "/sistema/usuario"}
+              to={homeLink}
             >
-              Reclame Aqui
+              {homeLabel}
             </Link>
 
-            {userType === "empresa" ? (
-              <Link
-                className={`Button_Op ${
-                  location.pathname.includes('/perfil') ? 'active' : ''
-                }`}
-                to="/perfil"
-              >
-                Perfil
-              </Link>
-            ) : (
-              <Link
-                className={`Button_Op ${
-                  location.pathname.includes('/perfil') ? 'active' : ''
-                }`}
-                to="/perfil"
-              >
-                Perfil
-              </Link>
-            )}
+            <Link
+              className={`Button_Op ${
+                location.pathname.includes('/perfil') ? 'active' : ''
+              }`}
+              to="/perfil"
+            >
+              Perfil
+            </Link>
 
             <Link className="Button_Op" to="/">
               Sair

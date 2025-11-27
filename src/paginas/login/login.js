@@ -35,7 +35,9 @@ const Login = () => {
       const user = await response.json();
       salvarUsuario(user);
 
-      navigate("/sistema/usuario");
+      const userData = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+      navigate(`/sistema/${userData?.tipo}`);
 
     } catch (error) {
       console.error("Erro ao fazer login:", error);

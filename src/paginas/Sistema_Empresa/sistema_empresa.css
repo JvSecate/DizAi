@@ -1,92 +1,97 @@
 :root {
-    --Verde-Agua-Claro: #04D9B2;
-    --Verde-Agua: #F2293D;
-    --azul-claro: #A0F2CC;
-    --branco: #F2F1F0;
-    --verde-azul-escuro: #17A68C;
+  --verde-agua-claro: #04D9B2;
+  --vermelho-claro: #F2293D;
+  --azul-claro: #A0F2CC;
+  --branco: #F2F1F0;
+  --verde-azul-escuro: #17A68C;
 }
 
-body {
-    background-color: var(--branco);
+.Fundo_FeedbackEmpresa {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("../../assets/img/3786391_78792 1.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
 }
-.Avaliacao_Pagina_Empresa{
-    width: 85%;
-    max-width: 400px;
-    padding-top: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    margin: auto;
+
+.Painel_FeedbackEmpresa {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 140px; 
+  gap: 30px;
 }
-.Tabela_Avaliacao_Empresa{
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+.FeedbackEmpresa-Tabela {
+  padding: 20px;
+  background: var(--azul-claro);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 900px;
+  overflow-x: auto;
 }
-.Tabela_Dados_Empresa{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background-color: var(--verde-azul-escuro);
-    width: 175%;
-    height: 220px;
-    border-radius: 20px;
+
+.FeedbackEmpresa-Tabela table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
-.Dados_Avaliacao_Empresa{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding-top: 10px;
+
+.FeedbackEmpresa-Tabela th {
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 8px;
+  white-space: nowrap;
+  position: relative;
 }
-.Dados_Avaliacao_Empresa input{
-    width: 100%;
-    height: 30px;
-    width: 375px;
-    background: var(--Verde-Agua-Claro);
-    padding-left: 10px;
-    font-size: 0.85em;
-    border: 1px solid var(--verde-azul-escuro);
-    color: #F2F1F0;
+
+.SortButton {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0;
 }
-.Dados_Avaliacao_Empresa textarea{
-    width: 100%;
-    height: 70px;
-    width: 375px;
-    background: var(--Verde-Agua-Claro);
-    padding-left: 10px;
-    font-size: 1.25em;
-    text-rendering: auto;
-    border: 1px solid var(--verde-azul-escuro);
-    color: #F2F1F0;
+
+.SortButton svg {
+  width: 16px;
+  height: 16px;
 }
-.Container_Button_Empresa{
-    padding-top: 20px;
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.FeedbackEmpresa-Tabela td {
+  padding: 10px 8px;
+  border-top: 1px solid rgba(0,0,0,0.15);
+  vertical-align: middle;
 }
-.Enviar_Usuario{
-    text-decoration: none;
-    border: 2px solid var(--verde-azul-escuro);
-    background: var(--verde-azul-escuro);
-    color: var(--branco);
-    width: 80%;
-    height: 40px;
-    border-radius: 10px;
-    transition: 0.35s;
+
+.FeedbackEmpresa-Tabela tr:hover {
+  background: rgba(0,0,0,0.05);
 }
-.Enviar_Usuario:hover{
-    background-color: var(--Verde-Agua-Claro);
-    color: black;
+
+.FeedbackEmpresa-Link {
+  text-decoration: none;
+  color: #005ecb;
 }
-.Enviar_Usuario:active{
-    transition: 0.001s;
-    height: 40px;
-    width: 60%;
+
+@media (max-width: 700px) {
+  .FeedbackEmpresa-Tabela {
+    padding: 15px;
+  }
+
+  .SortButton {
+    font-size: 0.85rem;
+  }
 }
