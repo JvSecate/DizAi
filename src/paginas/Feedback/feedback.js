@@ -58,6 +58,7 @@ const FeedbackDetalhe = () => {
 
   const confidencia = (feedback.conf_sentimento * 100).toFixed(1);
   const acimaLimite = confidencia > conf_min;
+  const mostrarSentimento = isEmpresa && usuario.empresa_id === feedback.empresa_id;
 
   const handleSubmitResposta = async (e) => {
     e.preventDefault();
@@ -95,19 +96,15 @@ const FeedbackDetalhe = () => {
       <h1 className="Feedback_Titulo">{feedback.titulo}</h1>
       <div className="Feedback_Conteudo">
         <p className="Feedback_Data">{formatarData(feedback.criado_em)}</p>
-        {(!isEmpresa || acimaLimite) && (
-          <div className="Sentimento_Container">
-            {!acimaLimite && (
-              <span className="Sentimento_Label" style={{ color: "#777" }}>
-                Indeterminado
-              </span>
-            )}
 
-            {acimaLimite && (
-              <span className="Sentimento_Label" style={{ color: corNota[feedback.nota_sentimento] }}>
-                {mapaNotas[feedback.nota_sentimento]}
-              </span>
-            )}
+        {mostrarSentimento && acimaLimite && (
+          <div className="Sentimento_Container">
+            <span
+              className="Sentimento_Label"
+              style={{ color: corNota[feedback.nota_sentimento] }}
+            >
+              {mapaNotas[feedback.nota_sentimento]}
+            </span>
 
             <button
               className="Sentimento_Btn"
@@ -118,11 +115,13 @@ const FeedbackDetalhe = () => {
 
             {mostrarPainel && (
               <div className="Sentimento_Detalhes">
-                <p style={{
-                  color: acimaLimite ? corNota[feedback.nota_sentimento] : "#777",
-                  fontWeight: "bold"
-                }}>
-                  Nota: {acimaLimite ? mapaNotas[feedback.nota_sentimento] : "Indeterminado"}
+                <p
+                  style={{
+                    color: corNota[feedback.nota_sentimento],
+                    fontWeight: "bold",
+                  }}
+                >
+                  Nota: {mapaNotas[feedback.nota_sentimento]}
                 </p>
                 <p>Confiança: {confidencia}%</p>
               </div>
@@ -137,7 +136,11 @@ const FeedbackDetalhe = () => {
         <h3>Respostas</h3>
         {respostas.length === 0 && <p>Nenhuma resposta ainda.</p>}
         {respostas.map(r => (
-          <div key={r.id} className="Feedback_Conteudo" style={{ background: "#A0F2CC", marginBottom: "1px" }}>
+          <div
+            key={r.id}
+            className="Feedback_Conteudo"
+            style={{ background: "#A0F2CC", marginBottom: "1px" }}
+          >
             <p style={{ fontWeight: "600" }}>{r.nome}</p>
             <p>{r.resposta}</p>
           </div>
@@ -152,7 +155,11 @@ const FeedbackDetalhe = () => {
               className="Dados"
               style={{ width: "100%", minHeight: "80px" }}
             />
-            <button type="submit" className="Alterar-botao" style={{ marginTop: "10px", marginBottom: "20px" }}>
+            <button
+              type="submit"
+              className="Alterar-botao"
+              style={{ marginTop: "10px", marginBottom: "20px" }}
+            >
               Enviar Resposta
             </button>
           </form>

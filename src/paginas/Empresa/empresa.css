@@ -1,163 +1,91 @@
-:root {
-    --Verde-Agua-Claro: #04D9B2;
-    --Verde-Agua: #F2293D;
-    --azul-claro: #A0F2CC;
-    --branco: #F2F1F0;
-    --verde-azul-escuro: #17A68C;
-}
-.Fundo-Empresa{
-  width: 100%;
-  min-height: 100vh;
-  background-image: url("../../assets/img/3786391_78792 1.svg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.Painel-empresa{
+.Fundo-Empresa {
+    width: 100%;
+    min-height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
+    align-items: center;
+    padding-top: 120px;
+}
+
+.empresa-container {
     width: 90%;
-    max-width: 700px;
+    max-width: 900px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.Painel-empresa {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: flex-start;
     padding: 40px;
     border-radius: 20px;
-    background: rgba(160, 242, 204, 0.9);
+    background: rgba(160, 242, 204, 0.95);
     backdrop-filter: blur(6px);
-}
-.empresa-container {
-    padding: 20px;
-    padding-top: 90px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
 }
 
 .empresa-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    gap: 25px;
+    width: 100%;
 }
 
 .empresa-header .Logo {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  border-radius: 12px;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    border-radius: 12px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+}
+
+.empresa-header div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
 }
 
 .empresa-header h1 {
-  font-size: 2rem;
-  color: #111;
-  margin-bottom: 5px;
+    font-size: 3rem;
+    margin: 0 0 5px 0;
 }
 
 .empresa-header h2 {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 10px;
+    font-size: 1.6rem;
+    margin: 0 0 10px 0;
 }
 
 .empresa-header p {
-  font-size: 0.95rem;
-  color: #333;
-  line-height: 1.4;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    margin: 0 0 5px 0;
 }
+
+.empresa-header p.email {
+    font-weight: 500;
+    margin-top: 5px;
+}
+
 .empresa-header button {
-  background-color: var(--verde-azul-escuro);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s ease;
+    align-self: flex-start;
+    margin-top: 10px;
+    background-color: var(--verde-azul-escuro);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
 }
 
 .empresa-header button:hover {
-  background-color: var(--Verde-Agua-Claro);
-}
-.detalhes-empresa{
-    display: flex;
-    gap: 20px;
-}
-.empresa-status {
-  background: #fff;
-  border-radius: 5%;
-}
-
-.empresa-status h2 {
-    text-align: center;
-    font-size: 1.5rem;
-    color: #111;
-    margin-bottom: 10px;
-}
-
-.empresa-status table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.empresa-status th,
-.empresa-status td {
-  border: 1px solid #ddd;
-  padding: 10px 14px;
-  text-align: left;
-  font-size: 0.95rem;
-}
-
-.empresa-status th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-}
-.empresa-status tr:nth-child(even){
-  background-color: #f5f5f5;
-}
-
-.empresa-status tr:nth-child(1) td:first-child {
-  color: #008314;
-}
-
-.empresa-status tr:nth-child(2) td:first-child {
-  color: #696969;
-}
-
-.empresa-status tr:nth-child(3) td:first-child {
-  color: #A70000;
-}
-
-.empresa-avaliacoes {
-  background: #fff;
-  border-radius: 20px;
-}
-
-.empresa-avaliacoes h2 {
-  text-align: center;
-  font-size: 1.5rem;
-  color: #111;
-  margin-bottom: 10px;
-}
-
-.empresa-avaliacoes table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.empresa-avaliacoes th,
-.empresa-avaliacoes td {
-  border: 1px solid #ddd;
-  padding: 10px 14px;
-  font-size: 0.95rem;
-  text-align: left;
-}
-
-.empresa-avaliacoes th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-}
-
-.empresa-avaliacoes tr:nth-child(even) {
-  background-color: #f5f5f5;
+    background-color: var(--Verde-Agua-Claro);
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import "./sistema_usuario.css";
 import ImgWomen from '../../assets/img/image 1.png';
 import { API_URL } from "../../config/config";
+import { useLocation } from "react-router-dom";
 
 const Sistema = () => {
   const navigate = useNavigate();
@@ -17,12 +18,24 @@ const Sistema = () => {
   const [mensagem, setMensagem] = useState("");
 
   const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  const location = useLocation();
 
   useEffect(() => {
     fetch(`${API_URL}/empresas`)
       .then(res => res.json())
       .then(data => setEmpresas(data));
   }, []);
+
+  useEffect(() => {
+  if (location.state) {
+    const { empresaId, empresaNome } = location.state;
+    if (empresaId && empresaNome) {
+      setEmpresaId(empresaId);
+      setEmpresaTexto(empresaNome);
+      setEmpresaSugestoes([]);
+    }
+  }
+}, [location.state]);
 
   const handleEmpresaChange = (e) => {
     const texto = e.target.value;
