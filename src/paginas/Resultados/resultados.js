@@ -9,10 +9,36 @@ const Resultados = () => {
   const [empresas, setEmpresas] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/empresas`)
-      .then((res) => res.json())
-      .then((data) => setEmpresas(data))
-      .catch((err) => console.error("Erro ao buscar empresas:", err));
+    const fetchEmpresas = async () => {
+      try {
+        const res = await fetch(`${API_URL}/empresas`);
+        const data = await res.json();
+
+        const empresasComScore = await Promise.all(
+          data.map(async (empresa) => {
+            try {
+              const scoreRes = await fetch(`${API_URL}/empresas/${empresa.id}/avg`);
+              const scoreData = await scoreRes.json();
+              return { ...empresa, media_sentimento: scoreData.media_nota };
+            } catch {
+              return { ...empresa, media_sentimento: null };
+            }
+          })
+        );
+
+        empresasComScore.sort((a, b) => {
+          if (a.media_sentimento === null) return 1;
+          if (b.media_sentimento === null) return -1;
+          return b.media_sentimento - a.media_sentimento;
+        });
+
+        setEmpresas(empresasComScore);
+      } catch (err) {
+        console.error("Erro ao buscar empresas:", err);
+      }
+    };
+
+    fetchEmpresas();
   }, []);
 
   const resultadosFiltrados = empresas.filter((empresa) =>
@@ -31,10 +57,7 @@ const Resultados = () => {
               onChange={(e) => setBusca(e.target.value)}
               className="campo-busca"
             />
-            <button
-              className="botao-buscar"
-              onClick={() => {}}
-            >
+            <button className="botao-buscar" onClick={() => {}}>
               Buscar
             </button>
           </div>
@@ -56,6 +79,11 @@ const Resultados = () => {
                     <h1>{empresa.nome}</h1>
                     <h2>{empresa.setor}</h2>
                     <p>{empresa.descricao}</p>
+                    <p>
+                      {empresa.media_sentimento !== null 
+                        ? `Nota: ${empresa.media_sentimento} ★`
+                        : "Não avaliado"}
+                    </p>
                   </div>
                 </Link>
               ))

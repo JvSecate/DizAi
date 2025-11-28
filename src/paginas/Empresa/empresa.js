@@ -24,6 +24,7 @@ export default function Empresa() {
   const [feedbacks, setFeedbacks] = useState([]);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [usuario, setUsuario] = useState(null);
+  const [mediaSentimento, setMediaSentimento] = useState(null);
 
   useEffect(() => {
     const u = JSON.parse(localStorage.getItem("usuarioLogado"));
@@ -45,6 +46,13 @@ export default function Empresa() {
         setFeedbacks(fil);
       })
       .catch(() => {});
+  }, [id]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/empresas/${id}/avg`)
+      .then(res => res.json())
+      .then(data => setMediaSentimento(data.media_nota))
+      .catch(() => setMediaSentimento(null));
   }, [id]);
 
   const sortBy = (key) => {
@@ -98,6 +106,11 @@ export default function Empresa() {
               {empresa.email && (
                 <p style={{ fontWeight: 500, marginTop: "5px" }}>Email: {empresa.email}</p>
               )}
+              <p style={{ fontWeight: 500, marginTop: "5px" }}>
+                {mediaSentimento !== null 
+                  ? <>Nota: {mediaSentimento} &#9733;</> 
+                  : "Não avaliado"}
+              </p>
             </div>
 
             {usuario?.tipo !== "empresa" && (
